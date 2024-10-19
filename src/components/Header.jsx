@@ -1,11 +1,14 @@
 import { useTheme, createTheme, Button, useMediaQuery } from "@mui/material";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Logo from "../assets/img/logo.png";
 import HeaderLogo from "../assets/img/Topbar-Logo.png";
 import "./style.css";
 import "../App.css";
+import { connectToMetaMask, disconnect } from "../utils/wallet";
 
-const Header = () => {
+const Header = (props) => {
+  const { address, setAddress, onDisconnect, error } = props;
+
   const theme = createTheme({
     // Define the theme within the component
     breakpoints: {
@@ -44,6 +47,13 @@ const Header = () => {
           <div className="not-flow-content font-header">Trade on Thetaswap</div>
         </Button>
       </div>
+      <button className="disconnect-button" onClick={onDisconnect}>
+        Disconnect
+      </button>
+      {address && (
+        <p className="wallet-address">Connected Account: {address}</p>
+      )}
+      {error && <p className="connect-error-message">{error}</p>}
     </div>
   ) : (
     <>
