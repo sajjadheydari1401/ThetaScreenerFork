@@ -4,8 +4,13 @@ import Logo from "../assets/img/logo.png";
 import HeaderLogo from "../assets/img/Topbar-Logo.png";
 import "./style.css";
 import "../App.css";
+import { useAccount, useDisconnect, useEnsAvatar, useEnsName } from "wagmi";
 
 const Header = () => {
+  const { address } = useAccount();
+  const { disconnect } = useDisconnect();
+  const { data: ensName } = useEnsName({ address });
+
   const theme = createTheme({
     // Define the theme within the component
     breakpoints: {
@@ -43,6 +48,16 @@ const Header = () => {
         >
           <div className="not-flow-content font-header">Trade on Thetaswap</div>
         </Button>
+        <div>
+          <button className="disconnect-button" onClick={() => disconnect()}>
+            Disconnect
+          </button>
+          {address && (
+            <div style={{ color: "white" }}>
+              {ensName ? `${ensName} (${address})` : address}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   ) : (
